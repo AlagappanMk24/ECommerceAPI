@@ -2,3 +2,8 @@
 /ECommerce.Infrastructure/obj
 /ECommerce.Domain/obj
 /ECommerce.Application/obj
+
+/ECommerce.Web/bin
+/ECommerce.Infrastructure/bin
+/ECommerce.Domain/bin
+/ECommerce.Application/bin
