@@ -1,0 +1,71 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Alagappan\\Learning\\Projects\\ECommerceAPI\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{1BE31F84-5AD6-4766-9EFD-F609ED34F607}|ECommerce.Domain\\ECommerce.Domain.csproj|d:\\alagappan\\learning\\projects\\ecommerceapi\\ecommerce.domain\\models\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1BE31F84-5AD6-4766-9EFD-F609ED34F607}|ECommerce.Domain\\ECommerce.Domain.csproj|solutionrelative:ecommerce.domain\\models\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1BE31F84-5AD6-4766-9EFD-F609ED34F607}|ECommerce.Domain\\ECommerce.Domain.csproj|d:\\alagappan\\learning\\projects\\ecommerceapi\\ecommerce.domain\\models\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1BE31F84-5AD6-4766-9EFD-F609ED34F607}|ECommerce.Domain\\ECommerce.Domain.csproj|solutionrelative:ecommerce.domain\\models\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36465DDC-81CF-4167-9804-BCE782C02E0E}|ECommerce.Application\\ECommerce.Application.csproj|d:\\alagappan\\learning\\projects\\ecommerceapi\\ecommerce.application\\mappings\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36465DDC-81CF-4167-9804-BCE782C02E0E}|ECommerce.Application\\ECommerce.Application.csproj|solutionrelative:ecommerce.application\\mappings\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "RefreshToken.cs",
+              "DocumentMoniker": "D:\\Alagappan\\Learning\\Projects\\ECommerceAPI\\ECommerce.Domain\\Models\\RefreshToken.cs",
+              "RelativeDocumentMoniker": "ECommerce.Domain\\Models\\RefreshToken.cs",
+              "ToolTip": "D:\\Alagappan\\Learning\\Projects\\ECommerceAPI\\ECommerce.Domain\\Models\\RefreshToken.cs",
+              "RelativeToolTip": "ECommerce.Domain\\Models\\RefreshToken.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAvAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-01T08:14:58.921Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ApplicationUser.cs",
+              "DocumentMoniker": "D:\\Alagappan\\Learning\\Projects\\ECommerceAPI\\ECommerce.Domain\\Models\\ApplicationUser.cs",
+              "RelativeDocumentMoniker": "ECommerce.Domain\\Models\\ApplicationUser.cs",
+              "ToolTip": "D:\\Alagappan\\Learning\\Projects\\ECommerceAPI\\ECommerce.Domain\\Models\\ApplicationUser.cs",
+              "RelativeToolTip": "ECommerce.Domain\\Models\\ApplicationUser.cs",
+              "ViewState": "AQIAAAkAAAAAAAAAAAA1wAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-01T08:14:48.248Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MappingProfile.cs",
+              "DocumentMoniker": "D:\\Alagappan\\Learning\\Projects\\ECommerceAPI\\ECommerce.Application\\Mappings\\MappingProfile.cs",
+              "RelativeDocumentMoniker": "ECommerce.Application\\Mappings\\MappingProfile.cs",
+              "ToolTip": "D:\\Alagappan\\Learning\\Projects\\ECommerceAPI\\ECommerce.Application\\Mappings\\MappingProfile.cs",
+              "RelativeToolTip": "ECommerce.Application\\Mappings\\MappingProfile.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAeAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-01T08:14:30.231Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

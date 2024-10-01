@@ -7,24 +7,28 @@ namespace ECommerce.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WishlistItemsController : ControllerBase
+    public class WishlistItemsController(IUnitOfWork unitOfWork, ILogger<WishlistItemsController> logger) : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public WishlistItemsController(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly ILogger<WishlistItemsController> _logger = logger;
 
         [HttpGet("Item/{id}")]
         public async Task<IActionResult> GetWishlistItem(int id)
         {
             if (ModelState.IsValid)
             {
-                var response = await _unitOfWork.WishlistItems.GetWishlistItem(id);
-                if (response.IsSucceeded)
-                    return StatusCode(response.StatusCode, response.Model);
-                return StatusCode(response.StatusCode, response.Message);
+                try
+                {
+                    var response = await _unitOfWork.WishlistItems.GetWishlistItem(id);
+                    if (response.IsSucceeded)
+                        return StatusCode(response.StatusCode, response.Model);
+                    return StatusCode(response.StatusCode, response.Message);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, $"An error occurred while retrieving wishlist item with ID {id}");
+                    return StatusCode(500, "Internal server error");
+                }
             }
             return BadRequest(ModelState);
         }
@@ -34,10 +38,18 @@ namespace ECommerce.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var response = await _unitOfWork.WishlistItems.GetAllWishlistItems();
-                if (response.IsSucceeded)
-                    return StatusCode(response.StatusCode, response.Model);
-                return StatusCode(response.StatusCode, response.Message);
+                try
+                {
+                    var response = await _unitOfWork.WishlistItems.GetAllWishlistItems();
+                    if (response.IsSucceeded)
+                        return StatusCode(response.StatusCode, response.Model);
+                    return StatusCode(response.StatusCode, response.Message);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "An error occurred while retrieving all wishlist items");
+                    return StatusCode(500, "Internal server error");
+                }
             }
             return BadRequest(ModelState);
         }
@@ -47,10 +59,18 @@ namespace ECommerce.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var response = await _unitOfWork.WishlistItems.GetItemsInWishlist(listId);
-                if (response.IsSucceeded)
-                    return StatusCode(response.StatusCode, response.Model);
-                return StatusCode(response.StatusCode, response.Message);
+                try
+                {
+                    var response = await _unitOfWork.WishlistItems.GetItemsInWishlist(listId);
+                    if (response.IsSucceeded)
+                        return StatusCode(response.StatusCode, response.Model);
+                    return StatusCode(response.StatusCode, response.Message);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, $"An error occurred while retrieving items in wishlist with ID {listId}");
+                    return StatusCode(500, "Internal server error");
+                }
             }
             return BadRequest(ModelState);
         }
@@ -60,13 +80,21 @@ namespace ECommerce.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var response = await _unitOfWork.WishlistItems.AddWishlistItem(item);
-                if (response.IsSucceeded)
+                try
                 {
-                    await _unitOfWork.Save();
-                    return StatusCode(response.StatusCode, response.Model);
+                    var response = await _unitOfWork.WishlistItems.AddWishlistItem(item);
+                    if (response.IsSucceeded)
+                    {
+                        await _unitOfWork.Save();
+                        return StatusCode(response.StatusCode, response.Model);
+                    }
+                    return StatusCode(response.StatusCode, response.Message);
                 }
-                return StatusCode(response.StatusCode, response.Message);
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "An error occurred while adding item to the wishlist");
+                    return StatusCode(500, "Internal server error");
+                }
             }
             return BadRequest(ModelState);
         }
@@ -76,13 +104,21 @@ namespace ECommerce.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var response = await _unitOfWork.WishlistItems.UpdateWishlistItem(id, item);
-                if (response.IsSucceeded)
+                try
                 {
-                    await _unitOfWork.Save();
-                    return StatusCode(response.StatusCode, response.Model);
+                    var response = await _unitOfWork.WishlistItems.UpdateWishlistItem(id, item);
+                    if (response.IsSucceeded)
+                    {
+                        await _unitOfWork.Save();
+                        return StatusCode(response.StatusCode, response.Model);
+                    }
+                    return StatusCode(response.StatusCode, response.Message);
                 }
-                return StatusCode(response.StatusCode, response.Message);
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, $"An error occurred while updating item with ID {id} in the wishlist");
+                    return StatusCode(500, "Internal server error");
+                }
             }
             return BadRequest(ModelState);
         }
@@ -92,13 +128,21 @@ namespace ECommerce.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var response = await _unitOfWork.WishlistItems.DeleteWishlistItem(id);
-                if (response.IsSucceeded)
+                try
                 {
-                    await _unitOfWork.Save();
-                    return StatusCode(response.StatusCode, response.Model);
+                    var response = await _unitOfWork.WishlistItems.DeleteWishlistItem(id);
+                    if (response.IsSucceeded)
+                    {
+                        await _unitOfWork.Save();
+                        return StatusCode(response.StatusCode, response.Model);
+                    }
+                    return StatusCode(response.StatusCode, response.Message);
                 }
-                return StatusCode(response.StatusCode, response.Message);
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, $"An error occurred while deleting item with ID {id} from the wishlist");
+                    return StatusCode(500, "Internal server error");
+                }
             }
             return BadRequest(ModelState);
         }

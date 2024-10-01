@@ -7,89 +7,118 @@ namespace ECommerce.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderController : ControllerBase
+    public class OrderController(IUnitOfWork unitOfWork, ILogger<OrderController> logger) : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public OrderController(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
-
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly ILogger<OrderController> _logger = logger;
 
         [HttpGet("Orders")]
         public async Task<IActionResult> GetAllOrders()
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            try
             {
                 var orders = await _unitOfWork.Orders.GetCustomerOrders();
                 if (orders.IsSucceeded)
-                    return StatusCode(orders.StatusCode, orders.Model);
+                    return Ok(orders.Model);
+
                 return StatusCode(orders.StatusCode, orders.Message);
             }
-            return BadRequest(ModelState);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while retrieving all orders.");
+                return StatusCode(500, "Internal server error.");
+            }
         }
 
         [HttpGet("Order/{id}")]
         public async Task<IActionResult> GetOrderById(int id)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            try
             {
                 var order = await _unitOfWork.Orders.GetOrderById(id);
                 if (order.IsSucceeded)
-                    return StatusCode(order.StatusCode, order.Model);
+                    return Ok(order.Model);
+
                 return StatusCode(order.StatusCode, order.Message);
             }
-            return BadRequest(ModelState);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while retrieving order with id: {Id}", id);
+                return StatusCode(500, "Internal server error.");
+            }
         }
 
         [HttpPost("AddOrder")]
         public async Task<IActionResult> AddOrder(OrderDto dto)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            try
             {
                 var response = await _unitOfWork.Orders.AddOrder(dto);
                 if (response.IsSucceeded)
                 {
                     await _unitOfWork.Save();
-                    return StatusCode(response.StatusCode, response.Model);
+                    return Ok(response.Model);
                 }
+
                 return StatusCode(response.StatusCode, response.Message);
             }
-            return BadRequest(ModelState);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while adding a new order.");
+                return StatusCode(500, "Internal server error.");
+            }
         }
 
         [HttpPut("EditOrder/{id}")]
         public async Task<IActionResult> UpdateOrder(int id, OrderDto dto)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            try
             {
                 var response = await _unitOfWork.Orders.UpdateOrder(id, dto);
                 if (response.IsSucceeded)
                 {
                     await _unitOfWork.Save();
-                    return StatusCode(response.StatusCode, response.Model);
+                    return Ok(response.Model);
                 }
+
                 return StatusCode(response.StatusCode, response.Message);
             }
-            return BadRequest(ModelState);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while updating order with id: {Id}", id);
+                return StatusCode(500, "Internal server error.");
+            }
         }
 
         [HttpDelete("DeleteOrder/{id}")]
         public async Task<IActionResult> CancelOrder(int id)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            try
             {
                 var response = await _unitOfWork.Orders.DeleteOrder(id);
                 if (response.IsSucceeded)
                 {
                     await _unitOfWork.Save();
-                    return StatusCode(response.StatusCode, response.Model);
+                    return Ok(response.Model);
                 }
+
                 return StatusCode(response.StatusCode, response.Message);
             }
-            return BadRequest(ModelState);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while canceling order with id: {Id}", id);
+                return StatusCode(500, "Internal server error.");
+            }
         }
-
     }
 }

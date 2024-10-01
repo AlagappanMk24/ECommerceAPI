@@ -7,100 +7,138 @@ namespace ECommerce.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderItemsController : ControllerBase
+    public class OrderItemsController(IUnitOfWork unitOfWork, ILogger<OrderItemsController> logger) : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public OrderItemsController(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly ILogger<OrderItemsController> _logger = logger;
 
         [HttpGet("OrderItem/{id}")]
         public async Task<IActionResult> GetOrderItem(int id)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            try
             {
-                var order = await _unitOfWork.OrderItems.GetOrderItems(id);
-                if (order.IsSucceeded)
-                    return StatusCode(order.StatusCode, order.Model);
-                return StatusCode(order.StatusCode, order.Message);
+                var orderItem = await _unitOfWork.OrderItems.GetOrderItems(id);
+                if (orderItem.IsSucceeded)
+                    return Ok(orderItem.Model);
+
+                return StatusCode(orderItem.StatusCode, orderItem.Message);
             }
-            return BadRequest(ModelState);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while retrieving order item with id: {Id}", id);
+                return StatusCode(500, "Internal server error.");
+            }
         }
 
         [HttpGet("Items")]
         public async Task<IActionResult> GetAllItems()
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            try
             {
-                var orders = await _unitOfWork.OrderItems.GetAllItems();
-                if (orders.IsSucceeded)
-                    return StatusCode(orders.StatusCode, orders.Model);
-                return StatusCode(orders.StatusCode, orders.Message);
+                var items = await _unitOfWork.OrderItems.GetAllItems();
+                if (items.IsSucceeded)
+                    return Ok(items.Model);
+
+                return StatusCode(items.StatusCode, items.Message);
             }
-            return BadRequest(ModelState);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while retrieving all order items.");
+                return StatusCode(500, "Internal server error.");
+            }
         }
 
         [HttpGet("ItemsInOrder/{orderId}")]
         public async Task<IActionResult> GetItemsInOrder(int orderId)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            try
             {
-                var Items = await _unitOfWork.OrderItems.GetItemsInOrder(orderId);
-                if (Items.IsSucceeded)
-                    return StatusCode(Items.StatusCode, Items.Model);
-                return StatusCode(Items.StatusCode, Items.Message);
+                var items = await _unitOfWork.OrderItems.GetItemsInOrder(orderId);
+                if (items.IsSucceeded)
+                    return Ok(items.Model);
+
+                return StatusCode(items.StatusCode, items.Message);
             }
-            return BadRequest(ModelState);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while retrieving items in order with id: {OrderId}", orderId);
+                return StatusCode(500, "Internal server error.");
+            }
         }
 
         [HttpPost("AddOrderItem")]
         public async Task<IActionResult> AddOrderItem(OrderItem item)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            try
             {
                 var response = await _unitOfWork.OrderItems.AddOrderItem(item);
                 if (response.IsSucceeded)
                 {
                     await _unitOfWork.Save();
-                    return StatusCode(response.StatusCode, response.Model);
+                    return Ok(response.Model);
                 }
+
                 return StatusCode(response.StatusCode, response.Message);
             }
-            return BadRequest(ModelState);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while adding an order item.");
+                return StatusCode(500, "Internal server error.");
+            }
         }
 
         [HttpPut("EditOrderItem/{id}")]
         public async Task<IActionResult> UpdateOrderItem(int id, OrderItem item)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            try
             {
                 var response = await _unitOfWork.OrderItems.UpdateOrderItem(id, item);
                 if (response.IsSucceeded)
                 {
                     await _unitOfWork.Save();
-                    return StatusCode(response.StatusCode, response.Model);
+                    return Ok(response.Model);
                 }
+
                 return StatusCode(response.StatusCode, response.Message);
             }
-            return BadRequest(ModelState);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while updating order item with id: {Id}", id);
+                return StatusCode(500, "Internal server error.");
+            }
         }
 
         [HttpDelete("DeleteOrderItem/{id}")]
         public async Task<IActionResult> CancelOrderItem(int id)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            try
             {
                 var response = await _unitOfWork.OrderItems.DeleteOrderItem(id);
                 if (response.IsSucceeded)
                 {
                     await _unitOfWork.Save();
-                    return StatusCode(response.StatusCode, response.Model);
+                    return Ok(response.Model);
                 }
+
                 return StatusCode(response.StatusCode, response.Message);
             }
-            return BadRequest(ModelState);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while deleting order item with id: {Id}", id);
+                return StatusCode(500, "Internal server error.");
+            }
         }
     }
 }
